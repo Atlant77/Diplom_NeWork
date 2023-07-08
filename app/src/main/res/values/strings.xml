@@ -28,4 +28,12 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_out">Sign Out</string>
+    <string name="posts">Posts</string>
+    <string name="events">Events</string>
+    <string name="image_attachment">Image attachment</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="login_form">Login form</string>
+    <string name="registration_fragment">Registration fragment</string>
 </resources>

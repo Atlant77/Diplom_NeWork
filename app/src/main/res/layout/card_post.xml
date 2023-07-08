@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="@dimen/margin_8dp"
+    app:cardCornerRadius="@dimen/common_spacing">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8dp"
         android:padding="@dimen/common_spacing">
 
         <ImageView
@@ -60,8 +61,7 @@
             app:icon="@drawable/ic_more_vert_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.AppTheme.IconButton"
-            />
+            style="@style/Widget.AppTheme.IconButton" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/header"
@@ -69,6 +69,56 @@
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="avatar,published,menu" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/attachment_layout"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <FrameLayout
+                android:id="@+id/audio_player_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <include
+                    android:id="@+id/audio_player_include"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/audio_player" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/video_player_container"
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <include
+                    android:id="@+id/video_player_include"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/video_player" />
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="370dp"
+                android:layout_height="97dp"
+                android:id="@+id/attachment_image_view"
+                android:layout_marginTop="@dimen/common_spacing"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_attachment"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/content"
@@ -80,7 +130,7 @@
             android:paddingBottom="@dimen/common_spacing"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@id/attachment_layout"
             tools:text="@sample/posts.json/data/content" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -92,28 +142,50 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
+            style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:contentDescription="@string/description_post_like"
+            app:icon="@drawable/baseline_thumb_up_off_alt_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/footer"
-            app:icon="@drawable/ic_like_24dp"
             tools:checked="@sample/posts.json/data/likedByMe"
-            tools:text="@sample/posts.json/data/likes"
-            style="@style/Widget.AppTheme.LikeCheckBox"
-            />
+            tools:text="@sample/posts.json/data/likeOwnerIds" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/share"
+            android:id="@+id/mentioned"
+            style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/description_post_share"
+            app:icon="@drawable/ic_share_24dp"
             app:layout_constraintStart_toEndOf="@+id/like"
             app:layout_constraintTop_toBottomOf="@id/footer"
-            app:icon="@drawable/ic_share_24dp"
+            tools:text="@sample/posts.json/data/mentionIds" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/coordinates"
             style="@style/Widget.AppTheme.IconButton"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:icon="@drawable/baseline_my_location_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/like"
+            tools:text="@sample/posts.json/data/coords" />
+
+        <TextView
+            android:id="@+id/link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:gravity="center_vertical"
+            android:textColorLink="#2256AD"
+            app:drawableLeftCompat="@drawable/baseline_link_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coordinates"
+            tools:text="@sample/posts.json/data/link" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

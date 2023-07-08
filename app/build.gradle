@@ -5,12 +5,12 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "ru.netology.nework"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -56,9 +56,9 @@ dependencies {
     def junit_version = "4.13.2"
     def ext_junit_version = '1.1.5'
     def espresso_core_version = '3.5.1'
-    def activity_version = '1.7.2'
+    def activity_version = '1.8.0-alpha06'
     def lifecycle_version = '2.6.1'
-    def mdc_version = '1.9.0'
+    def mdc_version = '1.10.0-alpha05'
     def nav_version = '2.6.0'
     def room_version = '2.5.2'
     def firebase_version = '32.1.1'
@@ -70,6 +70,7 @@ dependencies {
     def imagepicker_version = "2.1"
     def paging_version = "3.1.1"
     def play_services_base_version = '18.2.0'
+    def material3_version = "1.1.1"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.core:core-ktx:$core_version"
@@ -106,4 +107,7 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+
+    implementation "androidx.compose.material3:material3:$material3_version"
+    implementation "androidx.compose.material3:material3-window-size-class:$material3_version"
 }

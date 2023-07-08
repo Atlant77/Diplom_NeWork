@@ -29,4 +29,12 @@
     <string name="sign_in">Вход</string>
     <string name="sign_up">Регистрация</string>
     <string name="sign_out">Выход</string>
+    <string name="posts">Посты</string>
+    <string name="events">События</string>
+    <string name="image_attachment">Картинки</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="log_in">Вход</string>
+    <string name="login_form">Форма входа</string>
+    <string name="registration_fragment">Форма регистрации</string>
 </resources>
