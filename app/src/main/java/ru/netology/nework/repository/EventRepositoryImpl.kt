@@ -6,7 +6,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import ru.netology.nework.api.ApiService
 import ru.netology.nework.api.EventApi
 import ru.netology.nework.dao.EventDao
 import ru.netology.nework.dto.Attachment
