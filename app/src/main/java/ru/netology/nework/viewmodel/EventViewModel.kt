@@ -1,7 +1,6 @@
 package ru.netology.nework.viewmodel
 
 import android.net.Uri
-import androidx.core.net.toFile
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -10,13 +9,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.netology.nework.api.ApiService
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.dto.MediaUpload
+import ru.netology.nework.dto.Event
 import ru.netology.nework.dto.Post
 import ru.netology.nework.model.FeedModelState
 import ru.netology.nework.model.PhotoModel
-import ru.netology.nework.repository.PostRepository
+import ru.netology.nework.repository.EventRepository
 import ru.netology.nework.util.SingleLiveEvent
 import javax.inject.Inject
 
@@ -32,17 +30,17 @@ import javax.inject.Inject
 
 private val noPhoto = PhotoModel()
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class PostViewModel @Inject constructor(
-    private val repository: PostRepository,
+class EventViewModel @Inject constructor(
+    private val repository: EventRepository,
     auth: AppAuth,
 ) : ViewModel() {
     private val cached = repository
         .data
         .cachedIn(viewModelScope)
 
-    val data: Flow<PagingData<Post>> = auth.authStateFlow
+    val data: Flow<PagingData<Event>> = auth.authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
                 pagingData.map { post ->
@@ -55,7 +53,7 @@ class PostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-//    private val edited = MutableLiveData(empty)
+    //    private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
@@ -65,10 +63,10 @@ class PostViewModel @Inject constructor(
         get() = _photo
 
     init {
-        loadPosts()
+        loadEvents()
     }
 
-    fun loadPosts() = viewModelScope.launch {
+    fun loadEvents() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
             _dataState.value = FeedModelState()
@@ -77,7 +75,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun refreshPosts() = viewModelScope.launch {
+    fun refreshEvents() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(refreshing = true)
             _dataState.value = FeedModelState()

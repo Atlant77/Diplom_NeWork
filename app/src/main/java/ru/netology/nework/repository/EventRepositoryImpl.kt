@@ -7,14 +7,13 @@ import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.nework.api.ApiService
-import ru.netology.nework.api.PostApi
-import ru.netology.nework.dao.PostDao
-import ru.netology.nework.dao.PostRemoteKeyDao
+import ru.netology.nework.api.EventApi
+import ru.netology.nework.dao.EventDao
 import ru.netology.nework.dto.Attachment
+import ru.netology.nework.dto.Event
 import ru.netology.nework.dto.Media
 import ru.netology.nework.dto.MediaUpload
-import ru.netology.nework.dto.Post
-import ru.netology.nework.entity.PostEntity
+import ru.netology.nework.entity.EventEntity
 import ru.netology.nework.entity.toEntity
 import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.error.ApiError
@@ -25,28 +24,28 @@ import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class PostRepositoryImpl @Inject constructor(
-    private val apiService: PostApi,
-    mediator: PostRemoteMediator,
-    private val postDao: PostDao,
-) : PostRepository {
+class EventRepositoryImpl @Inject constructor(
+    private val apiService: EventApi,
+    mediator: EventRemoteMediator,
+    private val eventDao: EventDao,
+) : EventRepository {
 
-    override val data: Flow<PagingData<Post>> = Pager(
+    override val data: Flow<PagingData<Event>> = Pager(
         config = PagingConfig(pageSize = 15, enablePlaceholders = false),
-        pagingSourceFactory = { postDao.getAllPosts() },
+        pagingSourceFactory = { eventDao.getAllEvents() },
         remoteMediator = mediator
     ).flow.map { pagingData ->
-        pagingData.map(PostEntity::toDto)
+        pagingData.map(EventEntity::toDto)
     }
 
-    override suspend fun getAllPosts() {
+    override suspend fun getAllEvents() {
         try {
-            val response = apiService.getAllPosts()
+            val response = apiService.getAllEvents()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(body.toEntity())
+            eventDao.insert(body.toEntity())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -57,34 +56,34 @@ class PostRepositoryImpl @Inject constructor(
     override fun getNewerCount(id: Long): Flow<Int> = flow {
         while (true) {
             delay(120_000L)
-            val response = apiService.getNewer(id)
+            val response = apiService.getEventsNewer(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(body.toEntity())
+            eventDao.insert(body.toEntity())
             emit(body.size)
         }
     }
         .catch { e -> throw AppError.from(e) }
         .flowOn(Dispatchers.Default)
 
-    override suspend fun save(post: Post, upload: MediaUpload?) {
+    override suspend fun save(event: Event, upload: MediaUpload?) {
         try {
-            val postWithAttachment = upload?.let {
+            val eventWithAttachment = upload?.let {
                 upload(it)
             }?.let {
                 // TODO: add support for other types
-                post.copy(attachment = Attachment(it.id, AttachmentType.IMAGE))
+                event.copy(attachment = Attachment(it.id, AttachmentType.IMAGE))
             }
-            val response = apiService.save(postWithAttachment ?: post)
+            val response = apiService.saveEvent(eventWithAttachment ?: event)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
+            eventDao.insert(EventEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {

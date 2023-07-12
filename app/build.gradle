@@ -29,6 +29,11 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
 
     buildTypes {
@@ -58,7 +63,7 @@ dependencies {
     def espresso_core_version = '3.5.1'
     def activity_version = '1.8.0-alpha06'
     def lifecycle_version = '2.6.1'
-    def mdc_version = '1.10.0-alpha05'
+    def mdc_version = '1.7.0'
     def nav_version = '2.6.0'
     def room_version = '2.5.2'
     def firebase_version = '32.1.1'

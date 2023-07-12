@@ -20,9 +20,5 @@ data class Post(
     val likedByMe: Boolean,
     val attachment: Attachment? = null,
     val ownedByMe: Boolean = false,
-)
 
-data class Attachment(
-    val url: String,
-    val type: AttachmentType,
 )

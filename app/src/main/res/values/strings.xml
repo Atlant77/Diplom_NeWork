@@ -36,4 +36,15 @@
     <string name="log_in">Log in</string>
     <string name="login_form">Login form</string>
     <string name="registration_fragment">Registration fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="event_author_avatar">Event author avatar</string>
+    <string name="speakers">Speakers</string>
+    <string name="partisipates">Partisipates</string>
+    <string name="add_event">Add event</string>
+    <string name="chooser_share_event">Share event</string>
+    <string name="failed_autorization">Failed autorization</string>
+    <string name="successuful_autorization">Successuful autorization</string>
+    <string name="failed_of_registration">Failed of registration</string>
+    <string name="registration_successful">Registration successful!</string>
 </resources>

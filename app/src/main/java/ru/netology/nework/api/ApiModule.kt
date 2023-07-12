@@ -12,9 +12,16 @@ import javax.inject.Singleton
 class ApiModule {
     @Singleton
     @Provides
-    fun providePostApi(auth: AppAuth):PostApi = retrofit(okhttp(loggingInterceptor(), authInterceptor(auth))).create(PostApi::class.java)
+    fun providePostApi(auth: AppAuth): PostApi =
+        retrofit(okhttp(loggingInterceptor(), authInterceptor(auth))).create(PostApi::class.java)
 
     @Singleton
     @Provides
-    fun provideUserApi(auth: AppAuth):UserApi = retrofit(okhttp(loggingInterceptor(), authInterceptor(auth))).create(UserApi::class.java)
+    fun provideEventApi(auth: AppAuth): EventApi =
+        retrofit(okhttp(loggingInterceptor(), authInterceptor(auth))).create(EventApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideUserApi(auth: AppAuth): UserApi =
+        retrofit(okhttp(loggingInterceptor(), authInterceptor(auth))).create(UserApi::class.java)
 }

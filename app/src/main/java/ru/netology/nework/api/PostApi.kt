@@ -1,12 +1,16 @@
 package ru.netology.nework.api
 
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.netology.nework.dto.Media
 import ru.netology.nework.dto.Post
 
 interface PostApi {
@@ -51,4 +55,8 @@ interface PostApi {
     //GET /api/posts/{post_id}/newer/ api_posts_newer_read
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+
+    @Multipart
+    @POST("media")
+    suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
 }

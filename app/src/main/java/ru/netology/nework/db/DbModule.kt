@@ -7,6 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.netology.nework.dao.EventDao
+import ru.netology.nework.dao.EventRemoteKeyDao
+import ru.netology.nework.dao.PostDao
+import ru.netology.nework.dao.PostRemoteKeyDao
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -19,4 +23,16 @@ object DbModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+    @Provides
+    fun providePostDao(db: AppDb): PostDao = db.postDao()
+
+    @Provides
+    fun providePostKeyDao(db: AppDb): PostRemoteKeyDao = db.postRemoteKeyDao()
+
+    @Provides
+    fun provideEventDao(db: AppDb): EventDao = db.eventDao()
+
+    @Provides
+    fun providesEventKeyDao(db: AppDb): EventRemoteKeyDao = db.eventRemoteKeyDao()
 }

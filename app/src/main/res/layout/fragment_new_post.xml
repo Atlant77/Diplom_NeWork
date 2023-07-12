@@ -56,7 +56,7 @@
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginEnd="@dimen/common_spacing"
-        android:background="@color/divider_color"
+        android:background="@color/md_theme_light_outline"
         app:layout_constraintBottom_toTopOf="@id/buttonPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -11,6 +11,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.netology.nework.dto.PushToken
+import ru.netology.nework.dto.Token
 import ru.netology.nework.dto.User
 
 interface UserApi {
@@ -25,7 +26,7 @@ interface UserApi {
     suspend fun sendAuth(
         @Query("login") login: String,
         @Query("pass") pass: String
-    ): Response<PushToken>
+    ): Response<Token>
 
     //POST /api/users/registration/ api_users_registration_create
     @POST("/users/registration")
@@ -33,7 +34,7 @@ interface UserApi {
         @Query("login") login: String,
         @Query("pass") pass: String,
         @Query("name") name: String
-    ): Response<PushToken>
+    ): Response<Token>
 
     @Multipart
     @POST("/users/registration")
@@ -42,7 +43,7 @@ interface UserApi {
         @Part("pass") pass: RequestBody,
         @Part("name") name: RequestBody,
         @Part file: MultipartBody.Part
-    ): Response<PushToken>
+    ): Response<Token>
 
     //GET /api/users/{user_id}/ api_users_read
     @GET("users/{user_id}")

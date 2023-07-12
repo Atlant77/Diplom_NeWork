@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 133,
+      "authorId": 5,
+      "author": "Иванов Иван Иванович",
+      "authorAvatar": "@sample/post_avatar",
+      "authorJob": "Слесарь",
+      "content": "Здесь должно быть куча разного текста и контента, но будет просто набор буков и словей.",
+      "datetime": 123546546456,
+      "published": "2023-05-01T13:32:23.635Z",
+      "coords": "59.1289127;37.6854909",
+      "type": 1,
+      "likeOwnerIds": 3,
+      "likedByMe": true,
+      "speakerIds": 3,
+      "participantsIds": 2,
+      "participatedByMe": true,
+      "attachment": "https://netology.ru;2",
+      "link": "https://netology.ru",
+      "ownedByMe": true,
+      "users": "Иван Иванов"
+    }
+  ]
+}
