@@ -19,10 +19,8 @@ import kotlinx.coroutines.tasks.await
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nework.R
-import ru.netology.nework.api.ApiService
 import ru.netology.nework.api.UserApi
 import ru.netology.nework.dto.PushToken
-import ru.netology.nework.dto.Token
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import java.io.IOException
@@ -128,7 +126,7 @@ class AppAuth @Inject constructor(
                     CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.failed_of_registration),
+                            context.getString(R.string.registration_failed),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

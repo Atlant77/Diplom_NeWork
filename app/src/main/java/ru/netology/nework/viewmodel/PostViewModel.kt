@@ -1,18 +1,20 @@
 package ru.netology.nework.viewmodel
 
 import android.net.Uri
-import androidx.core.net.toFile
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import ru.netology.nework.api.ApiService
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.dto.MediaUpload
 import ru.netology.nework.dto.Post
 import ru.netology.nework.model.FeedModelState
 import ru.netology.nework.model.PhotoModel

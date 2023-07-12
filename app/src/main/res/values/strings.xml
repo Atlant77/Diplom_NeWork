@@ -43,8 +43,9 @@
     <string name="partisipates">Partisipates</string>
     <string name="add_event">Add event</string>
     <string name="chooser_share_event">Share event</string>
-    <string name="failed_autorization">Failed autorization</string>
+    <string name="failed_autorization">Authorisation Error</string>
     <string name="successuful_autorization">Successuful autorization</string>
-    <string name="failed_of_registration">Failed of registration</string>
-    <string name="registration_successful">Registration successful!</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="registration_successful">Registration successful</string>
+    <string name="type_of_event">Type of event</string>
 </resources>

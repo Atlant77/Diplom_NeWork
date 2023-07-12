@@ -16,7 +16,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.repository.PostRepository
 import ru.netology.nework.ui.NewPostFragment.Companion.textArg
 import ru.netology.nework.viewmodel.AuthViewModel
 import javax.inject.Inject

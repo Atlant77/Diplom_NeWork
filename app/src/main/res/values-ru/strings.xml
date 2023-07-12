@@ -37,4 +37,15 @@
     <string name="log_in">Вход</string>
     <string name="login_form">Форма входа</string>
     <string name="registration_fragment">Форма регистрации</string>
+    <string name="hello_blank_fragment">Привет пустой фрагмент</string>
+    <string name="event_author_avatar">Аватар автора события</string>
+    <string name="speakers">Выступающие</string>
+    <string name="partisipates">Участники</string>
+    <string name="add_event">Добавить событие</string>
+    <string name="chooser_share_event">Поделиться событием</string>
+    <string name="failed_autorization">Ошибка авторизации</string>
+    <string name="successuful_autorization">Успешная авторизация</string>
+    <string name="registration_failed">Ошибка регистрации</string>
+    <string name="registration_successful">Успешная регистрация</string>
+    <string name="type_of_event">Тип события</string>
 </resources>

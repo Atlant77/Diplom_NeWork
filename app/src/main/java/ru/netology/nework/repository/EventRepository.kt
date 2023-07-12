@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import ru.netology.nework.dto.Event
 import ru.netology.nework.dto.Media
 import ru.netology.nework.dto.MediaUpload
-import ru.netology.nework.dto.Post
 
 interface EventRepository {
     val data: Flow<PagingData<Event>>
