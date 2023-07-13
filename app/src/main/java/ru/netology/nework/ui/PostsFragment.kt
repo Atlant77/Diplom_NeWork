@@ -26,8 +26,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
-//    @Inject
-//    lateinit var repository: PostRepository
+    @Inject
+    lateinit var repository: PostRepository
 
     @Inject
     lateinit var auth: AppAuth
