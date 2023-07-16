@@ -1,9 +1,12 @@
 package ru.netology.nework.adapter
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +15,7 @@ import ru.netology.nework.R
 import ru.netology.nework.databinding.CardEventBinding
 import ru.netology.nework.dto.Event
 import ru.netology.nework.enumeration.AttachmentType
+import ru.netology.nework.util.Converters
 import ru.netology.nework.view.loadCircleCrop
 
 interface EventOnInteractionListener {
@@ -29,6 +33,7 @@ class EventsAdapter(
         return EventViewHolder(binding, onInteractionListener)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         // FIXME: students will do in HW
         getItem(position)?.let {
@@ -42,12 +47,20 @@ class EventViewHolder(
     private val onInteractionListener: EventOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
     fun bind(event: Event) {
         binding.apply {
             author.text = event.author
-            published.text = event.published
+            published.text = Converters.convertDateTime(event.published)
             content.text = event.content
-            event.authorAvatar?.let { avatar.loadCircleCrop(it) }
+            if (event.authorAvatar.isNullOrEmpty()) {
+                avatar.setImageResource(R.drawable.baseline_account_circle_24)
+            } else {
+                event.authorAvatar.let {
+                    avatar.loadCircleCrop(it)
+                }
+            }
             like.isChecked = event.likedByMe
             like.text = "${event.likeOwnerIds.size}"
             participates.isChecked = event.participatedByMe
@@ -60,7 +73,7 @@ class EventViewHolder(
 
             if (event.coords != null) {
                 coordinates.visibility = View.VISIBLE
-                coordinates.text = event.coords.toString()
+                coordinates.text = "${event.coords.lat}:${event.coords.long}"
             } else {
                 coordinates.visibility = View.GONE
             }

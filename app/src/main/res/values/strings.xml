@@ -55,4 +55,13 @@
     <string name="name">Name</string>
     <string name="confirm_password">Confirm password</string>
     <string name="registr">Registr</string>
+    <string name="play">Play</string>
+    <string name="play_pause_stop">Play/Pause/Stop</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="company">Company</string>
+    <string name="position">Position</string>
+    <string name="site">Site</string>
+    <string name="options_menu">Options menu</string>
+    <string name="add_job">Add job</string>
 </resources>

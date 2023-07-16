@@ -43,13 +43,13 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             }
 
             intent.removeExtra(Intent.EXTRA_TEXT)
-            findNavController(R.id.nav_host_fragment)
-                .navigate(
-                    R.id.action_feedFragment_to_newPostFragment,
-                    Bundle().apply {
-                        textArg = text
-                    }
-                )
+//            findNavController(R.id.nav_host_fragment)
+//                .navigate(
+//                    R.id.action_feedFragment_to_newPostFragment,
+//                    Bundle().apply {
+//                        textArg = text
+//                    }
+//                )
         }
 
         viewModel.data.observe(this) {
@@ -67,38 +67,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         }
 
         checkGoogleApiAvailability()
-
-        addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_main, menu)
-
-                menu.let {
-                    it.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
-                    it.setGroupVisible(R.id.authenticated, viewModel.authenticated)
-                }
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-                when (menuItem.itemId) {
-                    R.id.signin -> {
-                        // TODO: just hardcode it, implementation must be in homework
-                        auth.setAuth(5, "x-token")
-                        true
-                    }
-                    R.id.signup -> {
-                        // TODO: just hardcode it, implementation must be in homework
-                        auth.setAuth(5, "x-token")
-                        true
-                    }
-                    R.id.signout -> {
-                        // TODO: just hardcode it, implementation must be in homework
-                        auth.removeAuth()
-                        true
-                    }
-                    else -> false
-                }
-
-        })
     }
 
     private fun checkGoogleApiAvailability() {

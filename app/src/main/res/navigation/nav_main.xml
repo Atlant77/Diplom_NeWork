@@ -11,18 +11,14 @@
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed">
         <action
-            android:id="@+id/action_feedFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
             android:id="@+id/action_feedFragment_to_logInFragment"
             app:destination="@id/logInFragment" />
         <action
             android:id="@+id/action_feedFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -48,5 +44,19 @@
         android:id="@+id/postsFragment"
         android:name="ru.netology.nework.ui.PostsFragment"
         android:label="fragment_posts"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts">
+        <action
+            android:id="@+id/action_postsFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.netology.nework.ui.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/jobsFragment"
+        android:name="ru.netology.nework.JobsFragment"
+        android:label="fragment_jobs"
+        tools:layout="@layout/fragment_jobs" />
 </navigation>

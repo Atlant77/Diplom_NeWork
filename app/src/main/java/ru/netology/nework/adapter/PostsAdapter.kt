@@ -1,9 +1,11 @@
 package ru.netology.nework.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,7 @@ import ru.netology.nework.R
 import ru.netology.nework.databinding.CardPostBinding
 import ru.netology.nework.dto.Post
 import ru.netology.nework.enumeration.AttachmentType
+import ru.netology.nework.util.Converters
 import ru.netology.nework.view.loadCircleCrop
 
 interface PostOnInteractionListener {
@@ -29,6 +32,7 @@ class PostsAdapter(
         return PostViewHolder(binding, onInteractionListener)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         // FIXME: students will do in HW
         getItem(position)?.let {
@@ -42,12 +46,19 @@ class PostViewHolder(
     private val onInteractionListener: PostOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
-            published.text = post.published
+            published.text = Converters.convertDateTime(post.published)
             content.text = post.content
-            post.authorAvatar?.let { avatar.loadCircleCrop(it) }
+            if (post.authorAvatar.isNullOrEmpty()) {
+                avatar.setImageResource(R.drawable.baseline_account_circle_24)
+            } else {
+                post.authorAvatar.let {
+                    avatar.loadCircleCrop(it)
+                }
+            }
             like.isChecked = post.likedByMe
             like.text = "${post.likedOwnerIds.size}"
             mentioned.isChecked = post.mentionedMe
@@ -60,7 +71,7 @@ class PostViewHolder(
 
             if (post.coords != null) {
                 coordinates.visibility = View.VISIBLE
-                coordinates.text = post.coords.toString()
+                coordinates.text = "${post.coords.lat}:${post.coords.long}"
             } else {
                 coordinates.visibility = View.GONE
             }
@@ -103,6 +114,7 @@ class PostViewHolder(
                                 onInteractionListener.onRemove(post)
                                 true
                             }
+
                             R.id.edit -> {
                                 onInteractionListener.onEdit(post)
                                 true

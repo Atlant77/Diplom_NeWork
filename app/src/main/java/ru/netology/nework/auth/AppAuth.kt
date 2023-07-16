@@ -181,4 +181,7 @@ class AppAuth @Inject constructor(
     }
 }
 
-data class AuthState(val id: Long = 0, val token: String? = null)
+data class AuthState(
+    val id: Long = 0, val token: String? = null,
+    val avatar: String? = null, val name: String? = null
+)

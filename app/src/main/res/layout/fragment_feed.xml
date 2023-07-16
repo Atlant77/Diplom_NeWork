@@ -5,21 +5,66 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_inversePrimary"
+        style="@style/Widget.Material3.Toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/description_post_menu"
+                app:icon="@drawable/baseline_menu_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.Material3.Button.IconButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/description_post_menu"
+                app:icon="@drawable/ic_more_vert_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.Material3.Button.IconButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </Toolbar>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         style="@style/Widget.Material3.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_web_stories_24"
             android:text="@string/posts" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_event_24"
+            android:text="@string/events" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_event_24"
             android:text="@string/events" />
 
     </com.google.android.material.tabs.TabLayout>

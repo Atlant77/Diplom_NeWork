@@ -4,32 +4,59 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.installations.Utils
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
+import ru.netology.nework.auth.AppAuth
+import ru.netology.nework.databinding.FragmentLoginBinding
+import ru.netology.nework.repository.AuthRepository
+import ru.netology.nework.util.AndroidUtils
+import ru.netology.nework.view.LogInViewModel
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LogInFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class LogInFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
+    @Inject
+    lateinit var auth: AppAuth
 
-        }
-    }
+    @Inject
+    lateinit var repository: AuthRepository
+
+    private val viewModel: LogInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val binding = FragmentLoginBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).supportActionBar?.title = "Выполнить вход"
+
+        binding.loginButton.setOnClickListener {
+            val login = binding.login.editText.toString()
+            val pass = binding.password.editText.toString()
+            if (binding.login.editText == null || binding.password.editText == null) {
+                Toast.makeText(
+                    activity,
+                    "Please, fill all text",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                viewModel.logIn(login, pass)
+                AndroidUtils.hideKeyboard(requireView())
+                findNavController().navigateUp()
+            }
+        }
+
+
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_login, container, false)
+        return binding.root
     }
 
     companion object {
