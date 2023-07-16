@@ -55,4 +55,13 @@
     <string name="name">Имя</string>
     <string name="confirm_password">Подтвердить пароль</string>
     <string name="registr">Зарегистрироваться</string>
+    <string name="play">Воспр.</string>
+    <string name="play_pause_stop">Воспр./Пауза/Стоп</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+    <string name="company">Компания</string>
+    <string name="position">Позиция</string>
+    <string name="site">Сайт</string>
+    <string name="options_menu">Меню опций</string>
+    <string name="add_job">Добавить работу</string>
 </resources>
