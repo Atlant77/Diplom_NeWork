@@ -28,8 +28,7 @@ import javax.inject.Inject
 //    authorId = 0,
 //    author = "",
 //    authorAvatar = "",
-//    likedByMe = false,
-//    published = " ",
+//    published = "0"
 //)
 
 private val noPhoto = PhotoModel()
@@ -44,8 +43,10 @@ class PostViewModel @Inject constructor(
         .data
         .cachedIn(viewModelScope)
 
-    val data: Flow<PagingData<Post>> = auth.authStateFlow
+    val data: Flow<PagingData<Post>> = auth
+        .authStateFlow
         .flatMapLatest { (myId, _) ->
+            val cached = repository.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map { post ->
                     post.copy(ownedByMe = post.authorId.toLong() == myId)

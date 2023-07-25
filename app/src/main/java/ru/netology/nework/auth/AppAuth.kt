@@ -1,7 +1,10 @@
 package ru.netology.nework.auth
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.system.Os.remove
 import android.widget.Toast
+import androidx.core.content.edit
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.EntryPoint
@@ -21,6 +24,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nework.R
 import ru.netology.nework.api.UserApi
 import ru.netology.nework.dto.PushToken
+import ru.netology.nework.dto.Token
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import java.io.IOException
@@ -33,139 +37,55 @@ class AppAuth @Inject constructor(
     private val context: Context,
 ) {
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-    private val idKey = "id"
-    private val tokenKey = "token"
-    private var _authStateFlow: MutableStateFlow<AuthState>
+
+    companion object {
+        private const val ID_KEY = "ID_KEY"
+        private const val TOKEN_KEY = "TOKEN_KEY"
+    }
+
+    private val _authStateFlow: MutableStateFlow<AuthState>
 
     init {
-        val id = prefs.getLong(idKey, 0)
-        val token = prefs.getString(tokenKey, null)
+        val id = prefs.getLong(ID_KEY, 0)
+        val token = prefs.getString(TOKEN_KEY, null)
 
         if (id == 0L || token == null) {
             _authStateFlow = MutableStateFlow(AuthState())
-            with(prefs.edit()) {
-                clear()
-                apply()
-            }
+            removeAuth()
         } else {
             _authStateFlow = MutableStateFlow(AuthState(id, token))
         }
-        sendPushToken()
     }
 
     val authStateFlow: StateFlow<AuthState> = _authStateFlow.asStateFlow()
 
-    @InstallIn(SingletonComponent::class)
-    @EntryPoint
-    interface AppAuthEntryPoint {
-        fun apiService(): UserApi
-    }
-
     @Synchronized
-    fun setAuth(id: Long, token: String?) {
+    fun setAuth(id: Long, token: String) {
         _authStateFlow.value = AuthState(id, token)
-        with(prefs.edit()) {
-            putLong(idKey, id)
-            putString(tokenKey, token)
+        prefs.edit {
+            putLong(ID_KEY, id)
+            putString(TOKEN_KEY, token)
             apply()
         }
-        sendPushToken()
     }
 
-    @Synchronized
-    fun authorize(login: String, pass: String) {
-        CoroutineScope(Dispatchers.Default).launch {
-            try {
-                val response = getApiService(context).sendAuth(login, pass)
-                if (!response.isSuccessful) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.failed_autorization),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    throw ApiError(response.code(), response.message())
-                }
-                val body = response.body() ?: throw ApiError(response.code(), response.message())
-                setAuth(body.id, body.token)
-                println(body.token)
-                CoroutineScope(Dispatchers.Main).launch {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.successuful_autorization),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: IOException) {
-                throw NetworkError
-            } catch (e: Exception) {
-                println(e.message)
-            }
-        }
-    }
-
-    fun setRegistration(login: String, pass: String, name: String, upload: MultipartBody.Part?) {
-        CoroutineScope(Dispatchers.Default).launch {
-            try {
-                val response = if (upload != null) {
-                    getApiService(context).register(
-                        login.toRequestBody(),
-                        pass.toRequestBody(),
-                        name.toRequestBody(),
-                        upload
-                    )
-                } else {
-                    getApiService(context).register(
-                        login,
-                        pass,
-                        name
-                    )
-                }
-                if (!response.isSuccessful) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.registration_failed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    throw ApiError(response.code(), response.message())
-                }
-                val body = response.body() ?: throw ApiError(response.code(), response.message())
-                setAuth(body.id, body.token)
-                println(body.token)
-                CoroutineScope(Dispatchers.Main).launch {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.registration_successful),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: IOException) {
-                throw NetworkError
-            } catch (e: Exception) {
-                println(e.message)
-            }
-        }
-    }
+    fun getAuthorizedUserId(): Long = _authStateFlow.value.id ?: 0L
 
     @Synchronized
     fun removeAuth() {
         _authStateFlow.value = AuthState()
-        with(prefs.edit()) {
-            remove(tokenKey)
-            clear()
+        prefs.edit {
+            remove(TOKEN_KEY)
+            remove(ID_KEY)
             apply()
         }
-        sendPushToken()
     }
 
-    private fun sendPushToken(token: String? = null) {
+    fun sendPushToken(token: String? = null) {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 val pushToken = PushToken(token ?: Firebase.messaging.token.await())
-                getApiService(context).pushTokens(pushToken)
+//                getApiService(context).pushTokens(pushToken)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -179,9 +99,12 @@ class AppAuth @Inject constructor(
         )
         return hiltEntryPoint.apiService()
     }
+
+    @InstallIn(SingletonComponent::class)
+    @EntryPoint
+    interface AppAuthEntryPoint {
+        fun apiService(): UserApi
+    }
 }
 
-data class AuthState(
-    val id: Long = 0, val token: String? = null,
-    val avatar: String? = null, val name: String? = null
-)
+data class AuthState(val id: Long = 0, val token: String? = null)

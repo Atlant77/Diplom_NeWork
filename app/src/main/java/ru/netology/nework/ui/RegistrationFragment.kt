@@ -1,52 +1,92 @@
 package ru.netology.nework.ui
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import ru.netology.nework.R
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.dhaval2404.imagepicker.constant.ImageProvider
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import ru.netology.nework.auth.AppAuth
+import ru.netology.nework.databinding.FragmentRegistrationBinding
+import ru.netology.nework.repository.AuthRepository
+import ru.netology.nework.util.AndroidUtils
+import ru.netology.nework.viewmodel.AuthViewModel
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegistrationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class RegistrationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    @Inject
+    lateinit var auth: AppAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
+    @Inject
+    lateinit var repository: AuthRepository
+
+    private val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registration, container, false)
-    }
+    ): View {
+        val binding = FragmentRegistrationBinding.inflate(inflater, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegistrationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegistrationFragment().apply {
-                arguments = Bundle().apply {
+        with(binding) {
+            val pickPhotoLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    when (it.resultCode) {
+                        ImagePicker.RESULT_ERROR -> {
+                            Snackbar.make(
+                                binding.root,
+                                ImagePicker.getError(it.data),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
 
+                        Activity.RESULT_OK -> {
+                            it.data?.data
+                            viewModel.avatar.value
+                        }
+                    }
                 }
+
+            binding.makePhoto.setOnClickListener {
+                ImagePicker.with(requireActivity())
+                    .crop()
+                    .compress(2048)
+                    .provider(ImageProvider.CAMERA)
+                    .createIntent(pickPhotoLauncher::launch)
             }
+
+            binding.selectPhoto.setOnClickListener {
+                ImagePicker.with(requireActivity())
+                    .crop()
+                    .compress(2048)
+                    .provider(ImageProvider.GALLERY)
+                    .galleryMimeTypes(
+                        arrayOf(
+                            "image/png",
+                            "image/jpeg",
+                        )
+                    )
+                    .createIntent(pickPhotoLauncher::launch)
+            }
+
+            registrationButton.setOnClickListener {
+                AndroidUtils.hideKeyboard(requireView())
+                viewModel.registration(
+                    binding.loginInput.text.toString(),
+                    binding.passwordInput.text.toString(),
+                    binding.nameInput.text.toString()
+                )
+                findNavController().navigateUp()
+            }
+        }
+        return binding.root
     }
 }

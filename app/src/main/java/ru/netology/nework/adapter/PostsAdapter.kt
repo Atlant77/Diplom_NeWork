@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.netology.nework.R
 import ru.netology.nework.databinding.CardPostBinding
+import ru.netology.nework.dto.Coordinates
 import ru.netology.nework.dto.Post
 import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.util.Converters
@@ -22,6 +23,7 @@ interface PostOnInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
+    fun onCoordClick(coordinates: Coordinates) {}
 }
 
 class PostsAdapter(
@@ -132,6 +134,10 @@ class PostViewHolder(
 
             mentioned.setOnClickListener {
                 onInteractionListener.onShare(post)
+            }
+
+            coordinates.setOnClickListener {
+                onInteractionListener.onCoordClick(post.coords!!)
             }
         }
     }

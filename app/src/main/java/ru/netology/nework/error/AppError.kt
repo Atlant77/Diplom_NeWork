@@ -6,6 +6,7 @@ import java.io.IOException
 sealed class AppError(var code: String) : RuntimeException() {
     companion object {
         fun from(e: Throwable): AppError = when (e) {
+            is RegistrationError -> e
             is AppError -> e
             is SQLException -> DbError
             is IOException -> NetworkError
@@ -14,6 +15,7 @@ sealed class AppError(var code: String) : RuntimeException() {
     }
 }
 
+object RegistrationError : AppError("error_registration")
 class ApiError(val status: Int, code: String) : AppError(code)
 object NetworkError : AppError("error_network")
 object DbError : AppError("error_db")

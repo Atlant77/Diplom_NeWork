@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical|center_horizontal"
     android:fillViewport="true"
+    android:gravity="center_vertical|center_horizontal"
     tools:context=".ui.LogInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/common_spacing"
         android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/common_spacing">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registration_form"
             android:layout_marginBottom="@dimen/common_spacing"
-            android:textSize="24sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/registration_form"
+            android:textSize="24sp" />
 
         <ImageView
+            android:id="@+id/avatar"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center_horizontal"
@@ -31,6 +32,7 @@
             android:src="@drawable/baseline_account_circle_24" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/remove_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
@@ -72,6 +74,7 @@
             app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -87,6 +90,7 @@
             app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -103,6 +107,7 @@
             app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -120,6 +125,7 @@
             app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_confirm_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -128,11 +134,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/registration_button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/login"
-            style="@style/Widget.Material3.Button"
             android:text="@string/registr" />
     </LinearLayout>
 </ScrollView>

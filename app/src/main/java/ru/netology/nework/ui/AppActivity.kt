@@ -3,31 +3,30 @@ package ru.netology.nework.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.ui.NewPostFragment.Companion.textArg
 import ru.netology.nework.viewmodel.AuthViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
-//    @Inject
-//    lateinit var repository: PostRepository
+
+    private val authViewModel: AuthViewModel by viewModels()
 
     @Inject
     lateinit var auth: AppAuth
-    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +42,9 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             }
 
             intent.removeExtra(Intent.EXTRA_TEXT)
-//            findNavController(R.id.nav_host_fragment)
-//                .navigate(
-//                    R.id.action_feedFragment_to_newPostFragment,
-//                    Bundle().apply {
-//                        textArg = text
-//                    }
-//                )
         }
 
-        viewModel.data.observe(this) {
+        if (authViewModel.authorized) {
             invalidateOptionsMenu()
         }
 
@@ -61,12 +53,42 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 println("some stuff happened: ${task.exception}")
                 return@addOnCompleteListener
             }
-
             val token = task.result
             println(token)
         }
 
         checkGoogleApiAvailability()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        menu.let {
+            it?.setGroupVisible(R.id.unauthenticated, !authViewModel.authorized)
+            it?.setGroupVisible(R.id.authenticated, authViewModel.authorized)
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.log_in -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_logInFragment)
+                true
+            }
+
+            R.id.registr -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_registrationFragment)
+                true
+            }
+
+            R.id.logout -> {
+                auth.removeAuth()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun checkGoogleApiAvailability() {

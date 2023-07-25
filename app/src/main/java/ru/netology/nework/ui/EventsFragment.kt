@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nework.R
 import ru.netology.nework.adapter.EventOnInteractionListener
 import ru.netology.nework.adapter.EventsAdapter
@@ -22,6 +24,7 @@ import ru.netology.nework.repository.EventRepository
 import ru.netology.nework.viewmodel.EventViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class EventsFragment : Fragment() {
     @Inject
@@ -65,8 +68,10 @@ class EventsFragment : Fragment() {
         })
         binding.list.adapter = adapter
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest { adapter.submitData(it) }
+        lifecycleScope.launch {
+            viewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
         }
 
         lifecycleScope.launchWhenCreated {
@@ -81,7 +86,7 @@ class EventsFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
         binding.fab.setOnClickListener {
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            findNavController().navigate(R.id.action_feedFragment_to_newEventFragment)
         }
 
         return binding.root

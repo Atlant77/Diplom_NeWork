@@ -15,6 +15,13 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        if (rootProject.file("maps.properties").exists()) {
+            properties.load(rootProject.file("maps.properties").newDataInputStream())
+        }
+
+        manifestPlaceholders.mapsApiKey = properties.getProperty("MAPS_API_KEY", "")
     }
 
     compileOptions {
@@ -97,7 +104,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-paging:$room_version"
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:20.1.0'
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
@@ -116,4 +123,6 @@ dependencies {
 
     implementation "androidx.compose.material3:material3:$material3_version"
     implementation "androidx.compose.material3:material3-window-size-class:$material3_version"
+
+    implementation 'com.yandex.android:maps.mobile:4.3.1-lite'
 }

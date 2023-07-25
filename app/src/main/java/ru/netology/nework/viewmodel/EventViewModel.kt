@@ -9,24 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ru.netology.nework.api.EventApi
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.dto.Event
-import ru.netology.nework.dto.Post
-import ru.netology.nework.model.FeedModelState
+import ru.netology.nework.model.EventFeedModelState
 import ru.netology.nework.model.PhotoModel
 import ru.netology.nework.repository.EventRepository
 import ru.netology.nework.util.SingleLiveEvent
 import javax.inject.Inject
-
-//private val empty = Post(
-//    id = 0,
-//    content = "",
-//    authorId = 0,
-//    author = "",
-//    authorAvatar = "",
-//    likedByMe = false,
-//    published = " ",
-//)
 
 private val noPhoto = PhotoModel()
 
@@ -34,28 +24,31 @@ private val noPhoto = PhotoModel()
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val repository: EventRepository,
+    private val apiService: EventApi,
     auth: AppAuth,
 ) : ViewModel() {
     private val cached = repository
         .data
         .cachedIn(viewModelScope)
 
-    val data: Flow<PagingData<Event>> = auth.authStateFlow
+    val data: Flow<PagingData<Event>> = auth
+        .authStateFlow
         .flatMapLatest { (myId, _) ->
+            val cached = repository.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
-                pagingData.map { post ->
-                    post.copy(ownedByMe = post.authorId.toLong() == myId)
+                pagingData.map { event ->
+                    event.copy(ownedByMe = event.authorId.toLong() == myId)
                 }
             }
         }
 
-    private val _dataState = MutableLiveData<FeedModelState>()
-    val dataState: LiveData<FeedModelState>
+    private val _dataState = MutableLiveData<EventFeedModelState>()
+    val dataState: LiveData<EventFeedModelState>
         get() = _dataState
 
     //    private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
+    val eventCreated: LiveData<Unit>
         get() = _postCreated
 
     private val _photo = MutableLiveData(noPhoto)
@@ -68,19 +61,19 @@ class EventViewModel @Inject constructor(
 
     fun loadEvents() = viewModelScope.launch {
         try {
-            _dataState.value = FeedModelState(loading = true)
-            _dataState.value = FeedModelState()
+            _dataState.value = EventFeedModelState(loading = true)
+            _dataState.value = EventFeedModelState()
         } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = EventFeedModelState(error = true)
         }
     }
 
     fun refreshEvents() = viewModelScope.launch {
         try {
-            _dataState.value = FeedModelState(refreshing = true)
-            _dataState.value = FeedModelState()
+            _dataState.value = EventFeedModelState(refreshing = true)
+            _dataState.value = EventFeedModelState()
         } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = EventFeedModelState(error = true)
         }
     }
 

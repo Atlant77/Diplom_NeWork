@@ -25,9 +25,9 @@
     <string name="description_take_photo">Take photo</string>
     <string name="description_photo">Photo</string>
     <string name="remove">Remove</string>
-    <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Log In</string>
+    <string name="sign_up">Registration</string>
+    <string name="sign_out">Log Out</string>
     <string name="posts">Posts</string>
     <string name="events">Events</string>
     <string name="image_attachment">Image attachment</string>
@@ -64,4 +64,13 @@
     <string name="site">Site</string>
     <string name="options_menu">Options menu</string>
     <string name="add_job">Add job</string>
+    <string name="please_fill_all_fields">Please, fill all fields</string>
+    <string name="jobs">Jobs</string>
+    <string name="company_name">Company name</string>
+    <string name="event_date">Event date</string>
+    <string name="event_time">Event time</string>
+    <string name="event_type">Event type</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="event_info">Event info</string>
 </resources>

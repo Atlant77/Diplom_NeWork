@@ -1,22 +1,32 @@
 package ru.netology.nework.service
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import javax.inject.Inject
+import kotlin.random.Random
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 @AndroidEntryPoint
 class FCMService : FirebaseMessagingService() {
-    private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
+
     @Inject
     lateinit var auth: AppAuth
 
@@ -35,11 +45,32 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        // TODO: replace this in homework
-        println(message.data["content"])
+        try {
+            println(message.data["content"])
+            val push = gson.fromJson(message.data["content"], Push::class.java)
+            handlePush(push)
+        } catch (e: JsonSyntaxException) {
+            Log.e("FCMService", "can't not parse: ${message.data["content"]}")
+        }
     }
 
-//    override fun onNewToken(token: String) {
-//        auth.sendPushToken(token)
-//    }
+    private fun handlePush(push: Push) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.baseline_event_24)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentText(push.content)
+            .build()
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
+    }
+
+    data class Push(val recipiendId: Long?, val content: String)
 }

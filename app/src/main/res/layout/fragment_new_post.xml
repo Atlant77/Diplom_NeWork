@@ -20,13 +20,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit"
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:inputType="textMultiLine"
-                android:padding="@dimen/common_spacing" />
+                android:padding="@dimen/margin_8dp"
+                android:hint="@string/post_text"
+                app:expandedHintEnabled="false"
+                app:startIconContentDescription="Post text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_input"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:lines="10"
+                    android:maxLines="20" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <FrameLayout
                 android:id="@+id/photoContainer"
@@ -41,7 +53,8 @@
                     android:contentDescription="@string/description_photo" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/removePhoto"
+                    android:id="@+id/remove_photo"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
@@ -77,7 +90,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_select_photo"
             android:padding="@dimen/common_spacing"
-            app:icon="@drawable/ic_photo_24dp" />
+            app:icon="@drawable/baseline_add_photo_alternate_24" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/takePhoto"
@@ -86,7 +99,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_take_photo"
             android:padding="@dimen/common_spacing"
-            app:icon="@drawable/ic_camera_24dp" />
+            app:icon="@drawable/baseline_add_a_photo_24" />
     </LinearLayout>
 
 

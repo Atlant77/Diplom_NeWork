@@ -18,6 +18,7 @@ import ru.netology.nework.adapter.PostOnInteractionListener
 import ru.netology.nework.adapter.PostsAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentPostsBinding
+import ru.netology.nework.dto.Coordinates
 import ru.netology.nework.dto.Post
 import ru.netology.nework.repository.PostRepository
 import ru.netology.nework.viewmodel.PostViewModel
@@ -53,6 +54,10 @@ class PostsFragment : Fragment() {
 //                viewModel.removeById(post.id)
             }
 
+            override fun onCoordClick(coordinates: Coordinates) {
+                findNavController().navigate(R.id.mapFragment)
+            }
+
             override fun onShare(post: Post) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
@@ -66,6 +71,7 @@ class PostsFragment : Fragment() {
             }
         })
         binding.list.adapter = adapter
+
 
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest { adapter.submitData(it) }
@@ -83,7 +89,7 @@ class PostsFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
         binding.fab.setOnClickListener {
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
         return binding.root

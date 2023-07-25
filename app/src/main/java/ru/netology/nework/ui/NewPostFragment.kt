@@ -12,6 +12,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentNewPostBinding
 import ru.netology.nework.util.AndroidUtils
@@ -29,6 +30,7 @@ class NewPostFragment : Fragment() {
 
     private var fragmentBinding: FragmentNewPostBinding? = null
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +44,7 @@ class NewPostFragment : Fragment() {
         fragmentBinding = binding
 
         arguments?.textArg
-            ?.let(binding.edit::setText)
+            ?.let(binding.postInput::setText)
 
         binding.edit.requestFocus()
 
@@ -56,6 +58,7 @@ class NewPostFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
+
                     Activity.RESULT_OK -> viewModel.changePhoto(it.data?.data)
                 }
             }
@@ -115,6 +118,7 @@ class NewPostFragment : Fragment() {
                         }
                         true
                     }
+
                     else -> false
                 }
 
