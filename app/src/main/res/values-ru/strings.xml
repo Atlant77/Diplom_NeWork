@@ -64,4 +64,13 @@
     <string name="site">Сайт</string>
     <string name="options_menu">Меню опций</string>
     <string name="add_job">Добавить работу</string>
+    <string name="please_fill_all_fields">Пожалуйста, заполните все поля.</string>
+    <string name="jobs">Работы</string>
+    <string name="company_name">Компания</string>
+    <string name="event_date">Дата события</string>
+    <string name="event_time">Время события</string>
+    <string name="event_type">Тип события</string>
+    <string name="online">В сети</string>
+    <string name="offline">Живое</string>
+    <string name="event_info">Информация о событии</string>
 </resources>

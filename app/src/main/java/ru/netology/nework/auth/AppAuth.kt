@@ -69,7 +69,7 @@ class AppAuth @Inject constructor(
         }
     }
 
-    fun getAuthorizedUserId(): Long = _authStateFlow.value.id ?: 0L
+    fun getAuthorizedUserId(): Long = _authStateFlow.value.id
 
     @Synchronized
     fun removeAuth() {

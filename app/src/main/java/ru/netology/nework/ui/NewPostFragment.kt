@@ -20,6 +20,7 @@ import ru.netology.nework.util.StringArg
 import ru.netology.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class NewPostFragment : Fragment() {
 
     companion object {

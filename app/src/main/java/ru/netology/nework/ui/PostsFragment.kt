@@ -1,5 +1,6 @@
 package ru.netology.nework.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nework.R
 import ru.netology.nework.adapter.PostOnInteractionListener
 import ru.netology.nework.adapter.PostsAdapter
@@ -34,6 +38,7 @@ class PostsFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: PostViewModel by activityViewModels()
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,17 +77,20 @@ class PostsFragment : Fragment() {
         })
         binding.list.adapter = adapter
 
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest { adapter.submitData(it) }
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.data.collectLatest { adapter.submitData(it) }
+            }
         }
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest { state ->
-                binding.swiperefresh.isRefreshing =
-                    state.refresh is LoadState.Loading ||
-                            state.prepend is LoadState.Loading ||
-                            state.append is LoadState.Loading
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                adapter.loadStateFlow.collectLatest { state ->
+                    binding.swiperefresh.isRefreshing =
+                        state.refresh is LoadState.Loading ||
+                                state.prepend is LoadState.Loading ||
+                                state.append is LoadState.Loading
+                }
             }
         }
 

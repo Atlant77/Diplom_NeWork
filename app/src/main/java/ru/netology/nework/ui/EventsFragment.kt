@@ -1,5 +1,6 @@
 package ru.netology.nework.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +37,7 @@ class EventsFragment : Fragment() {
     lateinit var auth: AppAuth
     private val viewModel: EventViewModel by activityViewModels()
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,17 +73,19 @@ class EventsFragment : Fragment() {
         binding.list.adapter = adapter
 
         lifecycleScope.launch {
-            viewModel.data.collectLatest {
-                adapter.submitData(it)
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.data.collectLatest { adapter.submitData(it) }
             }
         }
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest { state ->
-                binding.swiperefresh.isRefreshing =
-                    state.refresh is LoadState.Loading ||
-                            state.prepend is LoadState.Loading ||
-                            state.append is LoadState.Loading
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                adapter.loadStateFlow.collectLatest { state ->
+                    binding.swiperefresh.isRefreshing =
+                        state.refresh is LoadState.Loading ||
+                                state.prepend is LoadState.Loading ||
+                                state.append is LoadState.Loading
+                }
             }
         }
 
