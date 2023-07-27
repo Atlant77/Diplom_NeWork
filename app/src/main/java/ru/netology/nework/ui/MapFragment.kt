@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
+import ru.netology.nework.BuildConfig
 import ru.netology.nework.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {
@@ -15,7 +16,7 @@ class MapFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MapKitFactory.setApiKey("60596e07-86f2-49f9-b9b4-6d62f8011ee0")
+        MapKitFactory.setApiKey(BuildConfig.MAPS_API_KEY)
     }
 
     override fun onCreateView(
