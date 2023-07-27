@@ -84,9 +84,15 @@ class RegistrationFragment : Fragment() {
                     binding.passwordInput.text.toString(),
                     binding.nameInput.text.toString()
                 )
-                findNavController().navigateUp()
             }
         }
+
+        viewModel.authorizationData.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            auth.setAuth(it.id, it.token)
+            findNavController().navigateUp()
+        }
+
         return binding.root
     }
 }

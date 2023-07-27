@@ -48,7 +48,6 @@ class EventViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.O)
     fun bind(event: Event) {
         binding.apply {
             author.text = event.author

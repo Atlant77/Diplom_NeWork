@@ -48,13 +48,13 @@ class LogInFragment : Fragment() {
             } else {
                 viewModel.authorization(login, pass)
                 AndroidUtils.hideKeyboard(requireView())
-                findNavController().navigateUp()
             }
         }
 
         viewModel.authorizationData.observe(viewLifecycleOwner) {
             if (it == null) return@observe
             auth.setAuth(it.id, it.token)
+            findNavController().navigateUp()
         }
         return binding.root
     }
