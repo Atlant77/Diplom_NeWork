@@ -31,6 +31,13 @@ class NewPostFragment : Fragment() {
 
     private var fragmentBinding: FragmentNewPostBinding? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requireActivity().actionBar?.title = null
+        requireActivity().actionBar?.setDisplayShowHomeEnabled(true)
+        requireActivity().actionBar?.setHomeButtonEnabled(true)
+        super.onCreate(savedInstanceState)
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +71,7 @@ class NewPostFragment : Fragment() {
                 }
             }
 
-        binding.pickPhoto.setOnClickListener {
+        binding.selectPhoto.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .compress(2048)

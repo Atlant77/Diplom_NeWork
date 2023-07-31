@@ -73,4 +73,15 @@
     <string name="online">В сети</string>
     <string name="offline">Живое</string>
     <string name="event_info">Информация о событии</string>
+    <string name="fill_in_for_login">Заполните для входа</string>
+    <string name="don_t_have_account">Еще нет аккаунта?</string>
+    <string name="already_have_account">Уже есть аккаунт?</string>
+    <string name="icon_of_toolbar">Иконка тулбара</string>
+    <string name="location">Местоположение</string>
+    <string name="link">Ссылка</string>
+    <string name="description_select_video">Выберите видео</string>
+    <string name="description_select_audio">Выберите аудио</string>
+    <string name="button_for_my_location">Кнопка для моего местоположения</string>
+    <string name="fragment_map">Фрагмент карты</string>
+    <string name="user_avatar">Аватар пользователя</string>
 </resources>

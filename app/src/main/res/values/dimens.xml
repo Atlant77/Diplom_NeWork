@@ -9,5 +9,6 @@
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
     <dimen name="image_height_240dp">240dp</dimen>
+    <dimen name="ToolbarTitleSize_18sp">18sp</dimen>
 </resources>
 

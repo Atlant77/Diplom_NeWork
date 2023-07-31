@@ -73,4 +73,15 @@
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="event_info">Event info</string>
+    <string name="fill_in_for_login">Fill in for login</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="icon_of_toolbar">Icon of toolbar</string>
+    <string name="location">Location</string>
+    <string name="link">Link</string>
+    <string name="description_select_video">Select video</string>
+    <string name="description_select_audio">Select audio</string>
+    <string name="button_for_my_location">Button for my location</string>
+    <string name="fragment_map">Fragment map</string>
+    <string name="user_avatar">User avatar</string>
 </resources>

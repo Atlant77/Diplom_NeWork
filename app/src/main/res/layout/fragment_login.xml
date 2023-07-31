@@ -61,8 +61,22 @@
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/login"
             android:text="@string/log_in" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:textAlignment="center"
+            android:text="@string/don_t_have_account" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            style="@style/ThemeOverlay.Material3.Button.TextButton"
+            android:layout_height="wrap_content"
+            android:id="@+id/go_to_register_button"
+            android:text="@string/registr" />
+
     </LinearLayout>
 </ScrollView>

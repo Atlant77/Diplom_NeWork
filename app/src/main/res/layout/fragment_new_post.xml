@@ -60,6 +60,48 @@
                     android:layout_gravity="center_horizontal|bottom"
                     android:text="@string/remove" />
             </FrameLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/location"
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/location"
+                android:padding="@dimen/margin_8dp"
+                app:expandedHintEnabled="false"
+                app:startIconContentDescription="Location"
+                app:startIconDrawable="@drawable/baseline_my_location_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/location_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/link"
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link"
+                android:padding="@dimen/margin_8dp"
+                app:expandedHintEnabled="false"
+                app:startIconContentDescription="Link"
+                app:startIconDrawable="@drawable/baseline_link_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/link_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/card_user_for_list" />
         </LinearLayout>
     </ScrollView>
 
@@ -84,7 +126,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/pickPhoto"
+            android:id="@+id/select_photo"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,13 +135,31 @@
             app:icon="@drawable/baseline_add_photo_alternate_24" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/takePhoto"
+            android:id="@+id/take_photo"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_take_photo"
             android:padding="@dimen/common_spacing"
             app:icon="@drawable/baseline_add_a_photo_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_video"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_select_video"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/baseline_video_file_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_audio"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_select_audio"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/baseline_audio_file_24" />
     </LinearLayout>
 
 

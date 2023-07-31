@@ -24,6 +24,7 @@ import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentEventsBinding
 import ru.netology.nework.dto.Event
 import ru.netology.nework.repository.EventRepository
+import ru.netology.nework.viewmodel.AuthViewModel
 import ru.netology.nework.viewmodel.EventViewModel
 import javax.inject.Inject
 
@@ -36,6 +37,7 @@ class EventsFragment : Fragment() {
     @Inject
     lateinit var auth: AppAuth
     private val viewModel: EventViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
@@ -44,6 +46,14 @@ class EventsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentEventsBinding.inflate(inflater, container, false)
+
+        authViewModel.data.observeForever {
+            if (!authViewModel.authorized) {
+                binding.fab.visibility = View.GONE
+            } else {
+                binding.fab.visibility = View.VISIBLE
+            }
+        }
 
         val adapter = EventsAdapter(object : EventOnInteractionListener {
             override fun onEdit(event: Event) {

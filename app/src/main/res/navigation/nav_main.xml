@@ -18,7 +18,7 @@
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_feedFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"></action>
         <action
             android:id="@+id/action_feedFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
@@ -38,7 +38,11 @@
         android:id="@+id/logInFragment"
         android:name="ru.netology.nework.ui.LogInFragment"
         android:label="login_fragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_logInFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="ru.netology.nework.ui.RegistrationFragment"
@@ -57,18 +61,19 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="ru.netology.nework.ui.MapFragment"
-        android:label="fragment_map"
+        android:label="@string/fragment_map"
         tools:layout="@layout/fragment_map">
         <argument
-            android:name="coordinates"
+            android:name="coordinatesArgs"
             android:defaultValue="@null"
-            app:argType="string"
+            app:argType="ru.netology.nework.dto.Coordinates"
             app:nullable="true" />
         <argument
             android:name="readOnly"
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
+
     <fragment
         android:id="@+id/jobsFragment"
         android:name="ru.netology.nework.ui.JobsFragment"
@@ -84,4 +89,9 @@
         android:name="ru.netology.nework.ui.NewJobFragment"
         android:label="fragment_new_job"
         tools:layout="@layout/fragment_new_job" />
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="ru.netology.nework.ui.UsersFragment"
+        android:label="fragment_users"
+        tools:layout="@layout/fragment_users" />
 </navigation>

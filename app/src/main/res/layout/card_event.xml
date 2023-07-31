@@ -17,7 +17,7 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/posts_avatar_size"
             android:layout_height="@dimen/posts_avatar_size"
-            android:layout_marginBottom="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/margin_4dp"
             android:contentDescription="@string/event_author_avatar"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/common_spacing"
-            android:layout_marginBottom="@dimen/common_spacing"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
@@ -56,11 +55,11 @@
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_post_menu"
             app:icon="@drawable/ic_more_vert_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/avatar"
             style="@style/Widget.Material3.Button.IconButton" />
 
         <View
@@ -116,6 +115,7 @@
                 android:id="@+id/audio_player_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -130,7 +130,7 @@
                 android:id="@+id/video_player_container"
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
-                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_4dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:id="@+id/attachment_image_view"
-                android:layout_marginTop="@dimen/common_spacing"
+                android:layout_marginTop="@dimen/margin_4dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_attachment"
                 android:visibility="gone"

@@ -15,7 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.ui.NewPostFragment.Companion.textArg
 import ru.netology.nework.viewmodel.AuthViewModel
 import javax.inject.Inject
 
@@ -31,6 +30,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val actionBar = supportActionBar
+
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
@@ -44,7 +45,51 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             intent.removeExtra(Intent.EXTRA_TEXT)
         }
 
-        if (authViewModel.authorized) {
+        authViewModel.data.observe(this) {
+            if (authViewModel.authorized) {
+                actionBar?.title = authViewModel.authUser.value?.name
+//                auth.authStateFlow.value.id.toString()
+                actionBar?.setDisplayShowHomeEnabled(true)
+                actionBar?.setDisplayUseLogoEnabled(true)
+                actionBar?.setLogo(R.drawable.baseline_account_circle_24)
+
+//                actionBar?.setLogo(
+//                    Glide.with(this)
+//                        .asDrawable()
+//                        .load(authViewModel.authUser.value?.avatar)
+//                        .placeholder(R.drawable.baseline_downloading_24)
+//                        .error(R.drawable.baseline_broken_image_24)
+//                        .timeout(10_000)
+//                )
+//
+//                Glide.with(this)
+//                    .asBitmap()
+//                    .load(authViewModel.authUser.value?.avatar)
+//                    .placeholder(R.drawable.baseline_downloading_24)
+//                    .error(R.drawable.baseline_broken_image_24)
+//                    .timeout(10_000)
+//                    .into(object : CustomTarget<Drawable>() {
+//                        override fun onResourceReady(
+//                            resource: Drawable,
+//                            transition: Transition<in Drawable>?
+//                        ) {
+//                            actionBar?.setLogo(resource)
+//                        }
+//
+//                        override fun onLoadCleared(placeholder: Drawable?) {
+//                            // this is called when imageView is cleared on lifecycle call or for
+//                            // some other reason.
+//                            // if you are referencing the bitmap somewhere else too other than this imageView
+//                            // clear it here as you can no longer have the bitmap
+//                        }
+//                    })
+            } else {
+                actionBar?.setDisplayShowHomeEnabled(true)
+                actionBar?.setDisplayUseLogoEnabled(true)
+                actionBar?.setLogo(R.drawable.baseline_account_circle_24)
+                actionBar?.title = "Not login"
+            }
+
             invalidateOptionsMenu()
         }
 
@@ -60,12 +105,13 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         checkGoogleApiAvailability()
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
-        menu.let {
-            it?.setGroupVisible(R.id.unauthenticated, !authViewModel.authorized)
-            it?.setGroupVisible(R.id.authenticated, authViewModel.authorized)
+        menu?.let {
+            it.setGroupVisible(R.id.unauthenticated, !authViewModel.authorized)
+            it.setGroupVisible(R.id.authenticated, authViewModel.authorized)
         }
         return true
     }
@@ -76,17 +122,14 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_logInFragment)
                 true
             }
-
             R.id.registr -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_registrationFragment)
                 true
             }
-
             R.id.logout -> {
                 auth.removeAuth()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }

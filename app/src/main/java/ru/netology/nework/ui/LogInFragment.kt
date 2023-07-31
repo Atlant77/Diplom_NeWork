@@ -34,7 +34,9 @@ class LogInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
-        (activity as AppCompatActivity).supportActionBar?.title = "Выполнить вход"
+        var actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar = null
+        actionBar?.title = getString(R.string.fill_in_for_login)
 
         binding.loginButton.setOnClickListener {
             val login = binding.loginInput.text.toString()
@@ -47,6 +49,7 @@ class LogInFragment : Fragment() {
                 ).show()
             } else {
                 viewModel.authorization(login, pass)
+                viewModel.data.value?.id?.let { it1 -> viewModel.getUserById(it1) }
                 AndroidUtils.hideKeyboard(requireView())
             }
         }
@@ -56,6 +59,11 @@ class LogInFragment : Fragment() {
             auth.setAuth(it.id, it.token)
             findNavController().navigateUp()
         }
+
+        binding.goToRegisterButton.setOnClickListener {
+            findNavController().navigate(R.id.registrationFragment)
+        }
+
         return binding.root
     }
 }

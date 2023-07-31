@@ -1,11 +1,10 @@
 package ru.netology.nework.adapter
 
-import android.os.Build
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.annotation.RequiresApi
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,7 @@ interface PostOnInteractionListener {
     fun onLike(post: Post) {}
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
-    fun onShare(post: Post) {}
+    fun onMention(post: Post) {}
     fun onCoordClick(coordinates: Coordinates) {}
 }
 
@@ -34,12 +33,9 @@ class PostsAdapter(
         return PostViewHolder(binding, onInteractionListener)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        // FIXME: students will do in HW
-        getItem(position)?.let {
-            holder.bind(it)
-        }
+        val post = getItem(position) ?: return
+        holder.bind(post)
     }
 }
 
@@ -48,7 +44,7 @@ class PostViewHolder(
     private val onInteractionListener: PostOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
@@ -72,8 +68,11 @@ class PostViewHolder(
             } else link.visibility = View.GONE
 
             if (post.coords != null) {
-                coordinates.visibility = View.VISIBLE
                 coordinates.text = "${post.coords.lat}:${post.coords.long}"
+                coordinates.setOnClickListener {
+                    onInteractionListener.onCoordClick(post.coords)
+                }
+                coordinates.visibility = View.VISIBLE
             } else {
                 coordinates.visibility = View.GONE
             }
@@ -133,7 +132,7 @@ class PostViewHolder(
             }
 
             mentioned.setOnClickListener {
-                onInteractionListener.onShare(post)
+                onInteractionListener.onMention(post)
             }
 
             coordinates.setOnClickListener {

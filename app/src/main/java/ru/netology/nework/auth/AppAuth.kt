@@ -69,8 +69,6 @@ class AppAuth @Inject constructor(
         }
     }
 
-    fun getAuthorizedUserId(): Long = _authStateFlow.value.id
-
     @Synchronized
     fun removeAuth() {
         _authStateFlow.value = AuthState()
@@ -90,20 +88,6 @@ class AppAuth @Inject constructor(
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun getApiService(context: Context): UserApi {
-        val hiltEntryPoint = EntryPointAccessors.fromApplication(
-            context,
-            AppAuthEntryPoint::class.java
-        )
-        return hiltEntryPoint.apiService()
-    }
-
-    @InstallIn(SingletonComponent::class)
-    @EntryPoint
-    interface AppAuthEntryPoint {
-        fun apiService(): UserApi
     }
 }
 
