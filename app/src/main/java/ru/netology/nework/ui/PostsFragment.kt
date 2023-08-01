@@ -77,7 +77,12 @@ class PostsFragment : Fragment() {
             }
 
             override fun onCoordClick(coordinates: Coordinates) {
-                findNavController().navigate(R.id.mapFragment)
+                findNavController().navigate(
+                    FeedFragmentDirections.actionFeedFragmentToMapFragment(
+                        coordinates,
+                        authViewModel.authorized
+                    )
+                )
             }
 
             override fun onMention(post: Post) {

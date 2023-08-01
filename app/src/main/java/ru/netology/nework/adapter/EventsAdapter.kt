@@ -1,18 +1,17 @@
 package ru.netology.nework.adapter
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.annotation.RequiresApi
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.netology.nework.R
 import ru.netology.nework.databinding.CardEventBinding
+import ru.netology.nework.dto.Coordinates
 import ru.netology.nework.dto.Event
 import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.util.Converters
@@ -22,7 +21,8 @@ interface EventOnInteractionListener {
     fun onLike(event: Event) {}
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
-    fun onShare(event: Event) {}
+    fun onParticipates(event: Event) {}
+    fun onCoordClick(coordinates: Coordinates) {}
 }
 
 class EventsAdapter(
@@ -33,7 +33,6 @@ class EventsAdapter(
         return EventViewHolder(binding, onInteractionListener)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         // FIXME: students will do in HW
         getItem(position)?.let {
@@ -132,7 +131,11 @@ class EventViewHolder(
             }
 
             participates.setOnClickListener {
-                onInteractionListener.onShare(event)
+                onInteractionListener.onParticipates(event)
+            }
+
+            coordinates.setOnClickListener {
+                onInteractionListener.onCoordClick(event.coords!!)
             }
         }
     }

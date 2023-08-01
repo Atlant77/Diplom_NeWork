@@ -16,6 +16,7 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import ru.netology.nework.BuildConfig
@@ -28,10 +29,11 @@ import javax.inject.Inject
 class MapFragment : Fragment(R.layout.fragment_map), InputListener {
 
     private var mapView: MapView? = null
+    private lateinit var mapObjects: MapObjectCollection
 
-    //    private val args: MapFragmentArgs by navArgs()
-    private val coordinates: Coordinates? = null
-    private val readOnly: Boolean = false
+    private val args: MapFragmentArgs by navArgs()
+    private var coordinates: Coordinates? = null
+    private var readOnly: Boolean = false
 
     @Inject
     lateinit var appAuth: AppAuth
@@ -51,17 +53,25 @@ class MapFragment : Fragment(R.layout.fragment_map), InputListener {
 
         mapView = binding.mapView
 
+        coordinates = args.coordinatesArgs
+        readOnly = args.readOnly
+
         MapKitFactory.initialize(requireContext())
         val mapKit = MapKitFactory.getInstance()
         mapKit.resetLocationManagerToDefault()
 
-        binding.getMyLocation.setOnClickListener {
-            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (readOnly) {
+            binding.getMyLocation.setOnClickListener {
+                binding.getMyLocation.visibility = View.VISIBLE
+                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        } else {
+            binding.getMyLocation.visibility = View.GONE
         }
 
         mapView?.getMap()?.move(
             CameraPosition(
-                Point(59.945933, 30.320045),
+                Point(coordinates!!.lat.toDouble(), coordinates!!.long.toDouble()),
                 14.0f, 0.0f, 0.0f
             ),
             Animation(

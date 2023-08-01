@@ -30,8 +30,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val actionBar = supportActionBar
-
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
@@ -43,54 +41,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             }
 
             intent.removeExtra(Intent.EXTRA_TEXT)
-        }
-
-        authViewModel.data.observe(this) {
-            if (authViewModel.authorized) {
-                actionBar?.title = authViewModel.authUser.value?.name
-//                auth.authStateFlow.value.id.toString()
-                actionBar?.setDisplayShowHomeEnabled(true)
-                actionBar?.setDisplayUseLogoEnabled(true)
-                actionBar?.setLogo(R.drawable.baseline_account_circle_24)
-
-//                actionBar?.setLogo(
-//                    Glide.with(this)
-//                        .asDrawable()
-//                        .load(authViewModel.authUser.value?.avatar)
-//                        .placeholder(R.drawable.baseline_downloading_24)
-//                        .error(R.drawable.baseline_broken_image_24)
-//                        .timeout(10_000)
-//                )
-//
-//                Glide.with(this)
-//                    .asBitmap()
-//                    .load(authViewModel.authUser.value?.avatar)
-//                    .placeholder(R.drawable.baseline_downloading_24)
-//                    .error(R.drawable.baseline_broken_image_24)
-//                    .timeout(10_000)
-//                    .into(object : CustomTarget<Drawable>() {
-//                        override fun onResourceReady(
-//                            resource: Drawable,
-//                            transition: Transition<in Drawable>?
-//                        ) {
-//                            actionBar?.setLogo(resource)
-//                        }
-//
-//                        override fun onLoadCleared(placeholder: Drawable?) {
-//                            // this is called when imageView is cleared on lifecycle call or for
-//                            // some other reason.
-//                            // if you are referencing the bitmap somewhere else too other than this imageView
-//                            // clear it here as you can no longer have the bitmap
-//                        }
-//                    })
-            } else {
-                actionBar?.setDisplayShowHomeEnabled(true)
-                actionBar?.setDisplayUseLogoEnabled(true)
-                actionBar?.setLogo(R.drawable.baseline_account_circle_24)
-                actionBar?.title = "Not login"
-            }
-
-            invalidateOptionsMenu()
         }
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->

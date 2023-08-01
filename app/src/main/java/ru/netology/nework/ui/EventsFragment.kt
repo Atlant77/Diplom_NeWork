@@ -22,6 +22,7 @@ import ru.netology.nework.adapter.EventOnInteractionListener
 import ru.netology.nework.adapter.EventsAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentEventsBinding
+import ru.netology.nework.dto.Coordinates
 import ru.netology.nework.dto.Event
 import ru.netology.nework.repository.EventRepository
 import ru.netology.nework.viewmodel.AuthViewModel
@@ -68,7 +69,7 @@ class EventsFragment : Fragment() {
 //                viewModel.removeById(event.id)
             }
 
-            override fun onShare(event: Event) {
+            override fun onParticipates(event: Event) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, event.content)
@@ -79,7 +80,17 @@ class EventsFragment : Fragment() {
                     Intent.createChooser(intent, getString(R.string.chooser_share_event))
                 startActivity(shareIntent)
             }
+
+            override fun onCoordClick(coordinates: Coordinates) {
+                findNavController().navigate(
+                    FeedFragmentDirections.actionFeedFragmentToMapFragment(
+                        coordinates,
+                        authViewModel.authorized
+                    )
+                )
+            }
         })
+
         binding.list.adapter = adapter
 
         lifecycleScope.launch {

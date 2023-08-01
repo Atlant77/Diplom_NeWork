@@ -18,7 +18,7 @@
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_feedFragment_to_mapFragment"
-            app:destination="@id/mapFragment"></action>
+            app:destination="@id/mapFragment" />
         <action
             android:id="@+id/action_feedFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
